@@ -35,8 +35,8 @@ export default class UsersService {
         await verifiedData.isPasswordCorrect(password);
 
         const token = this.#tokenGen.generate(
-            userObtained.dto.email,
-            userObtained.dto.userId
+            verifiedData.dto.email,
+            verifiedData.dto.userId
         );
         return { user: userObtained.dto, token };
     }

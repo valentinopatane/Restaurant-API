@@ -1,11 +1,16 @@
 import Users from "../schemas/users.js";
-
+import { asDto } from "../dto/users.js";
 export default class UsersDAO {
     constructor() {}
 
     async findUser(email) {
-        const existingUser = await Users.findOne({ email });
-        return existingUser;
+        try {
+            console.log(email);
+            const existingUser = await Users.findOne({ email });
+            return asDto(existingUser);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async registerUser(user) {

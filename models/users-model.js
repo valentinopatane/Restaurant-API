@@ -11,6 +11,7 @@ export default class UsersModel {
     }
 
     set userId(userId) {
+        console.log(userId);
         if (!userId) {
             throw new Error("Error. Invalid id.");
         }
