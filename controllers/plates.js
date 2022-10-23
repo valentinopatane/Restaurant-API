@@ -21,7 +21,10 @@ export async function editPlate(req, res) {
 }
 export async function deletePlate(req, res) {
     try {
-        const data = await PlatesService.delPlate(req.params.id, req.body);
+        const data = await PlatesService.delPlate(
+            req.params.id,
+            req.body.plateId
+        );
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json(error.message);

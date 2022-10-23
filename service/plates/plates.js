@@ -9,6 +9,7 @@ export default class PlatesService {
     }
 
     async createPlate(idCat, newP) {
+        console.log(newP);
         const plateId = uuid4();
         const newPlate = new this.#model({ plateId, ...newP });
         const categorie = await this.#dao.getC(idCat);
@@ -20,10 +21,10 @@ export default class PlatesService {
             _id: idCat,
             categorieId: idCat,
             name: categorie.name,
-            plates: [newPlate.dto, ...categorie.plates],
+            plates: [...categorie.plates, newPlate.dto],
         };
-        const createdPlate = await this.#dao.update(idCat, newData);
-        return createdPlate;
+        const data = await this.#dao.update(idCat, newData);
+        return data;
     }
     async editPlate(idCat, idPlate, data) {
         const editedPlate = new this.#model({ ...data });
@@ -42,11 +43,9 @@ export default class PlatesService {
             throw new Error("Plate doesn't exist");
         }
 
-        const filteredCat = categorie.plates.filter(
-            (plate) => plate.plateId !== idPlate
+        const filteredCat = categorie.plates.map((plate) =>
+            plate.plateId === idPlate ? (plate = editedPlate.dto) : plate
         );
-        filteredCat.push(editedPlate.dto);
-
         const newData = {
             _id: idCat,
             categorieId: idCat,
@@ -65,14 +64,14 @@ export default class PlatesService {
             }
 
             const plateFound = categorie.plates.filter(
-                (plate) => plate.plateId === idPlate.plateId
+                (plate) => plate.plateId === idPlate
             );
             if (plateFound.length === 0) {
                 throw new Error("Plate doesn't exist");
             }
 
             const filteredCat = categorie.plates.filter(
-                (plate) => plate.plateId !== idPlate.plateId
+                (plate) => plate.plateId !== idPlate
             );
             const newData = {
                 _id: idCat,
@@ -83,7 +82,7 @@ export default class PlatesService {
             const value = this.#dao.update(idCat, newData);
             return value;
         } catch (error) {
-            console.log(error);
+            return error;
         }
     }
 }
