@@ -43,7 +43,7 @@ export default class CatDAO {
     }
     async delete(id) {
         try {
-            await Categories.findByIdAndDelete({ _id: id });
+            await Categories.findByIdAndDelete(id);
             return true;
         } catch (error) {
             console.log(error);

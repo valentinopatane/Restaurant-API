@@ -5,7 +5,6 @@ export default class UsersDAO {
 
     async findUser(email) {
         try {
-            console.log(email);
             const existingUser = await Users.findOne({ email });
             return asDto(existingUser);
         } catch (error) {
@@ -14,7 +13,6 @@ export default class UsersDAO {
     }
 
     async registerUser(user) {
-        console.log(user);
         const newUser = new Users({ _id: user.userId, ...user });
 
         try {
